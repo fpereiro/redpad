@@ -1,0 +1,27 @@
+{
+   "name": "redpad",
+   "version": "1.0.0",
+   "description": "Tool to generate interlined translations of texts.",
+   "dependencies": {
+      "astack": "3.0.0",
+      "dale": "3.1.0",
+      "lith": "3.4.0",
+      "teishi": "3.1.5"
+   },
+   "main": "redpad.js",
+   "author": "Federico Pereiro <fpereiro@gmail.com>",
+   "contributors": ["Federico Pereiro <fpereiro@gmail.com>"],
+   "license": [{
+      "type": "Public Domain",
+      "url": "http://github.com/fpereiro/redpad#license"
+   }],
+   "keywords": ["translation", "reading", "text"],
+   "repository" : {
+      "type": "git",
+      "url": "http://github.com/fpereiro/redpad.git"
+   },
+   "bugs": {
+      "url": "http://github.com/fpereiro/redpad/issues",
+      "email": "fpereiro@gmail.com"
+   }
+}
