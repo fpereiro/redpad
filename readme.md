@@ -8,13 +8,13 @@ It would be cool to read classics in the original language. And reading in a lan
 
 But reading originals in a language that you don't know well can be a pain when you need to look up a word. Especially in a tablet.
 
-It would be nice to have the translation in the text itself. Here's things that would make it extra nicer:
+It would be nice to have the translation in the text itself. Other qualities of an ideal interlined book are:
 
-- Appear and disappear when I want, at the touch of a button.
+- Make the translation appear and disappear when I want, at the touch of a large, always visible button.
 - Have pages, so it's easy to scroll.
 - The translations should be longer than a word and shorter than a sentence.
-- Be accessible while offline.
-- Be responsive and useful on tablets and phones.
+- The book should be accessible while offline.
+- The book should be responsive and useful on tablets and phones.
 
 ## How does this look like?
 
@@ -70,7 +70,7 @@ For example, running `node redpad fr/voyage.txt json` and then `node redpad fr/v
 
 And if you are crazy enough:
 
-- Improve the translations manually for the books alrady in this repo (editing the .json files in the repo).
+- Improve the translations manually for the books already in this repo (editing the .json files in the repo).
 
 ## License
 
