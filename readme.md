@@ -18,9 +18,9 @@ It would be nice to have the translation in the text itself. Here's things that 
 
 ## How does this look like?
 
-Here's an English version of *Игрок* (The Gambler), by Feodor Dostoievski.
+Here's an English version of *[Игрок](https://cdn.rawgit.com/fpereiro/redpad/f19400b60e267b9c28c1f60f5509bd6f926056c4/ru/igrok-en.html)* (The Gambler), by Feodor Dostoievski.
 
-And here's an English version of *Voyage au Centre de la Terre* (Journey to the Center of the Earth), by Jules Verne.
+And here's an English version of *[Voyage au Centre de la Terre](https://cdn.rawgit.com/fpereiro/redpad/f19400b60e267b9c28c1f60f5509bd6f926056c4/fr/voyage-en.html)* (Journey to the Center of the Earth), by Jules Verne.
 
 Both files are hosted by courtesy of [RawGit](https://rawgit.com) and [MaxCDN](https://maxcdn.com).
 
@@ -34,7 +34,7 @@ The process is quite straightforward:
 
 - We start with a .txt file which contains the text to be translated.
 - We split it into parts (the technical term for this is `tokenizing`).
-- We use the amazing Yandex translation API to translate each token and generate a JSON file containing each token and its translation.
+- We use the amazing [Yandex translation API](https://tech.yandex.com) to translate each token and generate a JSON file containing each token and its translation.
 - We create a self-contained HTML web page which contains the JSON file above, plus a little bit of code and markup.
 
 ## Installation
