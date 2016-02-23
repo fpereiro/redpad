@@ -22,7 +22,7 @@ Here's an English version of *[Игрок](https://cdn.rawgit.com/fpereiro/redpa
 
 Here's an English version of *[Voyage au Centre de la Terre](https://cdn.rawgit.com/fpereiro/redpad/f19400b60e267b9c28c1f60f5509bd6f926056c4/fr/voyage-en.html)* (Journey to the Center of the Earth), by Jules Verne.
 
-Here's an English version of [Gerusalemme Liberata](https://cdn.rawgit.com/fpereiro/redpad/64251d6424674d81fd83e4630b776e8858d67540/it/gerusalemme-en.html), by Torcuato Tasso.
+Here's an English version of *[Gerusalemme Liberata](https://cdn.rawgit.com/fpereiro/redpad/64251d6424674d81fd83e4630b776e8858d67540/it/gerusalemme-en.html)* (Jerusalem Delivered), by Torcuato Tasso.
 
 All files are hosted by courtesy of [RawGit](https://rawgit.com) and [MaxCDN](https://maxcdn.com).
 
