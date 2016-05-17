@@ -20,6 +20,8 @@ It would be nice to have the translation in the text itself. Other qualities of 
 
 Here's an English version of *[Игрок](https://cdn.rawgit.com/fpereiro/redpad/f19400b60e267b9c28c1f60f5509bd6f926056c4/ru/igrok-en.html)* (The Gambler), by Feodor Dostoievski.
 
+Here's an English version of *[Война и мир](https://cdn.rawgit.com/fpereiro/redpad/9b121f14609b97be5e55b1eefbfa6d32859d242c/ru/voina-1-en.html)* (War and Peace), by Lev Tolstoy
+
 Here's an English version of *[Voyage au Centre de la Terre](https://cdn.rawgit.com/fpereiro/redpad/f19400b60e267b9c28c1f60f5509bd6f926056c4/fr/voyage-en.html)* (Journey to the Center of the Earth), by Jules Verne.
 
 Here's an English version of *[Gerusalemme Liberata](https://cdn.rawgit.com/fpereiro/redpad/64251d6424674d81fd83e4630b776e8858d67540/it/gerusalemme-en.html)* (Jerusalem Delivered), by Torcuato Tasso.
