@@ -26,6 +26,8 @@ Here's an English version of *[Voyage au Centre de la Terre](https://cdn.rawgit.
 
 Here's an English version of *[Gerusalemme Liberata](https://cdn.rawgit.com/fpereiro/redpad/64251d6424674d81fd83e4630b776e8858d67540/it/gerusalemme-en.html)* (Jerusalem Delivered), by Torcuato Tasso.
 
+Here's an English version of *[Один день Ивана Денисовича](https://cdn.rawgit.com/fpereiro/redpad/master/ru/ivandenisovich-en.html)* (A Day in the Life of Ivan Denisovich), by Feodor Dostoievski.
+
 All files are hosted by courtesy of [RawGit](https://rawgit.com) and [MaxCDN](https://maxcdn.com).
 
 ## But the translations are not correct! Isn't this misleading?
