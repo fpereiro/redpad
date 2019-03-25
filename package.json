@@ -1,12 +1,12 @@
 {
    "name": "redpad",
-   "version": "1.0.0",
+   "version": "2.0.0",
    "description": "Tool to generate interlined translations of texts.",
    "dependencies": {
       "astack": "3.0.0",
-      "dale": "3.1.0",
-      "lith": "3.4.0",
-      "teishi": "3.1.5"
+      "dale":   "4.3.3",
+      "lith":   "4.5.3",
+      "teishi": "3.13.2"
    },
    "main": "redpad.js",
    "author": "Federico Pereiro <fpereiro@gmail.com>",

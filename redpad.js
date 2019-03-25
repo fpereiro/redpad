@@ -1,5 +1,5 @@
 /*
-redpad - v1.0.0
+redpad - v2.0.0
 
 Written by Federico Pereiro (fpereiro@gmail.com) and released into the public domain.
 
@@ -90,10 +90,16 @@ Please refer to readme.md to read the annotated source.
                ['meta', {charset: 'utf-8'}],
                ['title', process.argv [2] + ' ' + TARGET],
                ['style', lith.css.g ([cssreset,
-                  ['body', {'padding-top, padding-bottom': '3vh', 'padding-left, padding-right': .03, 'background-color': 'black'}],
+                  ['body', {
+                     'padding-top, padding-bottom': '3vh',
+                     'padding-left, padding-right': .03,
+                     'background-color': 'black',
+                     'font-family': 'serif',
+                  }],
                   ['p', {'font-size': 20, 'color': 'white'}],
                   ['li', {'list-style-type': 'none', float: 'left', 'margin-right': 10, 'margin-bottom': 5}],
-                  ['p.small', {'font-size': 0.8, opacity: 0}],
+                  ['span.small', {position: 'absolute', top: 22, left: 0, 'font-size': 0.7, opacity: 0}],
+                  ['p.large', {position: 'relative', float: 'left', 'margin-bottom': 25, 'margin-right': 5}],
                   ['div#left', {width: .84}],
                   ['div#text',   {width: '100%', height: '85vh', 'background-color': 'black'}],
                   ['div#bottom', {width: '100%', height: '5vh'}, ['li', {'line-height': '5vh', width: 1/10, border: 'solid 2px white', color: 'white', cursor: 'pointer', 'text-align': 'center'}]],
@@ -110,7 +116,6 @@ Please refer to readme.md to read the annotated source.
                      return ['li', {onclick: 'show (' + v + ')'}, 'Move ' + v];
                   })]],
                ]],
-               ['div', {id: 'right', onclick: 'toggle ()'}],
                ['script', "window.data = function () {return " + s.last + '}'],
                ['script', fs.readFileSync ('client.js', 'utf8')]
             ]]

@@ -25,13 +25,24 @@
       else            page = Math.min (pages, page + offset);
       document.getElementById ('page').innerHTML = page + ' / ' + pages;
       var tokens = window.data ().slice (tokensPerPage * (page - 1), tokensPerPage * page);
-      var output = '<ul>';
+      var output = '<p>';
       for (var token in tokens) {
-         output += '<li><p>' + tokens [token] [0] + '</p><p class="small">' + tokens [token] [1] + '</p></li>';
+         var space = tokens [token] [0].match (/\n/);
+         output += '<p class="large">' + tokens [token] [0] + '<span class="small">' + tokens [token] [1] + '</span></p>';
+         if (space) output += '<br><br><br>';
       }
-      document.getElementById ('text').innerHTML = output + '</ul>';
+      document.getElementById ('text').innerHTML = output + '</p>';
    }
 
    window.show (0);
+
+   document.body.addEventListener ('click', window.toggle);
+
+   document.body.addEventListener ('keydown', function (e) {
+      var code = e.keyCode;
+      if (code === 13 || code === 32) window.toggle ();
+      if (code === 34 || code === 39) window.show (1);
+      if (code === 33 || code === 37) window.show (-1);
+   });
 
 }) ();
