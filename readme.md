@@ -58,6 +58,13 @@ module.exports = {
 }
 ```
 
+## Todo
+
+- Add pairs until the page is full.
+- Split tokens by words if they don't fit in line (also translations).
+- Single file with links to library.
+- Store last position per book.
+
 ## Usage
 
 - `node redpad SOURCE_FILE OPERATION TARGET_LANGUAGE`

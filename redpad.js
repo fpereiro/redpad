@@ -21,10 +21,6 @@ Please refer to readme.md to read the annotated source.
 
    var inter = exports;
 
-   inter.tokenize = function (s) {
-      a.return (s, s.last.match (/[^.?!,;:\n]+[.?!,;:\n]/g));
-   }
-
    inter.translate = function (s, string) {
       var request = https.request ({
          host: 'translate.yandex.net',
@@ -123,6 +119,10 @@ Please refer to readme.md to read the annotated source.
       ]));
    }
 
+   inter.tokenize = function (s) {
+      a.return (s, s.last.replace (/\t/g, ' ').replace (/\n{2,}/g, '\n').replace (/ {2,}/g, ' ').match (/[^.?!,;:\n]+[.?!,;:\n]+/g));
+   }
+
    inter.main = function () {
       var source = process.argv [2];
       var output = process.argv [3] || 'both';
@@ -137,7 +137,13 @@ Please refer to readme.md to read the annotated source.
                return [inter.translate, v];
             }, {max: 5}],
             function (s) {
-               a.call (s, [a.convert (fs.writeFile), source.replace (/\..{3,4}$/, '-' + TARGET + '.json'), JSON.stringify (s.last), 'utf8']);
+               var output = '[\n';
+               dale.do (s.last, function (v) {
+                  output += '   [' + JSON.stringify (v [0]) + ',   ' + JSON.stringify (v [1]) + '],\n';
+               });
+               output = output.slice (0, -2);
+               output += '\n]';
+               a.call (s, [a.convert (fs.writeFile), source.replace (/\..{3,4}$/, '-' + TARGET + '.json'), output, 'utf8']);
             }
          ],
          [a.convert (fs.readFile), source.replace (/\..{3,4}$/, '-' + TARGET + '.json'), 'utf8'],
