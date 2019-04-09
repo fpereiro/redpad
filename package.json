@@ -3,9 +3,7 @@
    "version": "2.0.0",
    "description": "Tool to generate interlined translations of texts.",
    "dependencies": {
-      "astack": "3.0.0",
       "dale":   "4.3.3",
-      "lith":   "4.5.3",
       "teishi": "3.13.2"
    },
    "main": "redpad.js",
