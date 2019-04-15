@@ -8,9 +8,9 @@ It would be cool to read classics in the original language. And reading in a lan
 
 But reading originals in a language that you don't know well can be a pain when you need to look up a word. Especially in a tablet.
 
-It would be nice to have the translation in the text itself. Other qualities of an ideal interlined book are:
+It would be nice to have the translation in the text itself, but only when I need them. Other qualities of an ideal interlined book are:
 
-- Make the translation appear and disappear when I want, at the touch of a large, always visible button.
+- Make the translation appear and disappear when I want, by just tapping on the screen.
 - Have pages, so it's easy to scroll.
 - The translations should be longer than a word and shorter than a sentence.
 - The book should be accessible while offline.
@@ -18,13 +18,19 @@ It would be nice to have the translation in the text itself. Other qualities of 
 
 ## How does this look like?
 
-Here's an English version of *[Игрок](https://unpkg.com/redpad@2.0.0/ru/igrok-en.html)* (The Gambler), by Feodor Dostoievski.
+Redpad is an HTML file that dynamically accesses a library of books in redpad format. This HTML file is, essentially, a reader.
 
-Here's an English version of the first tome of *[Война и мир](https://unpkg.com/redpad@2.0.0/ru/voina-1-en.html)* (War and Peace), by Lev Tolstoy
+- *[Gerusalemme Liberata](https://unpkg.com/redpad@2.0.0/redpad.html)* (Jerusalem Delivered), by Torcuato Tasso.
 
-Here's an English version of *[Voyage au Centre de la Terre](https://unpkg.com/redpad@2.0.0/fr/voyage-en.html)* (Journey to the Center of the Earth), by Jules Verne.
+The following public domain books are available, translated to English:
 
-Here's an English version of *[Gerusalemme Liberata](https://unpkg.com/redpad@2.0.0/it/gerusalemme-en.html)* (Jerusalem Delivered), by Torcuato Tasso.
+- *[Игрок](https://unpkg.com/redpad@2.0.0/ru/igrok-en.html)* (The Gambler), by Feodor Dostoievski.
+
+- Tome 1 of *[Война и мир](https://unpkg.com/redpad@2.0.0/ru/voina-1-en.html)* (War and Peace), by Lev Tolstoy
+
+- *[Voyage au Centre de la Terre](https://unpkg.com/redpad@2.0.0/fr/voyage-en.html)* (Journey to the Center of the Earth), by Jules Verne.
+
+- *[Gerusalemme Liberata](https://unpkg.com/redpad@2.0.0/it/gerusalemme-en.html)* (Jerusalem Delivered), by Torcuato Tasso.
 
 All files are hosted by courtesy of [Unpkg](https://unpkg.com).
 
@@ -39,14 +45,14 @@ The process is quite straightforward:
 - We start with a .txt file which contains the text to be translated.
 - We split it into parts (the technical term for this is `tokenizing`).
 - We use the amazing [Yandex translation API](https://tech.yandex.com) to translate each token and generate a JSON file containing each token and its translation.
-- We create a self-contained HTML web page which contains the JSON file above, plus a little bit of code and markup.
+- We dynamically fetch the JSON file with book content into an HTML reader.
 
 ## Installation
 
-To run redpad, you will need:
+To run redpad:
 
-- node.js.
-- `npm i redpad`.
+- Install node.js.
+- Run `npm i redpad`.
 - [Get a Yandex Translate API key](https://tech.yandex.com/keys/get/?service=trnsl).
 - Place it in a file named `config.js`, which should have the following form:
 
@@ -60,24 +66,22 @@ module.exports = {
 
 - Add pairs until the page is full.
 - Split tokens by words if they don't fit in line (also translations).
-- Single file with links to library.
 - Store last position per book.
 
 ## Usage
 
-- `node redpad SOURCE_FILE OPERATION TARGET_LANGUAGE`
-- `SOURCE_FILE` must be a path to an UTF-8 encoded text file, with an extension that doesn't finish in `.json` or `.html` and that has a length of either three or four characters.
-- `OPERATION` can be either `json` (for generating the `.json` file using the Yandex API), `html` (for generating the `.html` from a preexisting `.json` file) or `both` (for doing first the `.json` and then the `.html`).
-- `LANGUAGE` is the **target** language of your translation, by default English.
+To take a text file and generate a JSON file where the translations will be placed: `node redpad json TXTFILE JSONFILE`.
 
-For example, running `node redpad fr/voyage.txt json` and then `node redpad fr/voyage.txt html` will generate the same result than running `node redpad fr/voyage.txt both` once.
+To take the json file generated in the previous step and load translations into it: `node redpad translate JSONFILE`. Redpad will start fetching missing translations but leave the previously fetched ones in place. If you wish to cancel the operation, you can enter CTRL+C. Redpad will save all the translations fetched so far into the file.
+
+The json file is an array of arrays. Each of the arrays contains two strings (the original text plus its translation), or a string and a `null` (in case that particular piece of text hasn't been translated yet).
 
 ## How can I help?
 
-- Submit .txts of books that are uncontestedly in the public domain. Even better, submit .txts and their corresponding .jsons and .htmls. If everything looks nice and legal, I will put them here.
+- Submit text files of books that are uncontestedly in the public domain. If everything looks nice and legal, I will put them here.
 - Recommend visual or functional improvements to how we display the book.
 - Share it with people that might find it interesting.
-- Thank the fine folks at [Github](https://github.com), [Yandex](https://tech.yandex.com/) and [MaxCDN](https://maxcdn.com) for providing the essential infrastructure for this project.
+- Thank the fine folks at [Github](https://github.com), [Yandex](https://tech.yandex.com/) and [Unpkg](https://unpkg.com) for providing the essential infrastructure for this project.
 
 And if you are crazy enough:
 

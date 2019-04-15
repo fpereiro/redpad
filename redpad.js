@@ -68,6 +68,7 @@ Please refer to readme.md to read the annotated source.
       var translated = 0;
       var outro = function () {
          fs.writeFileSync (from, r.stringify (source));
+         clog ('Saved', translated, 'translations successfully.');
          process.exit ();
       }
       var loop = function () {
