@@ -20,19 +20,23 @@ It would be nice to have the translation in the text itself, but only when I nee
 
 Redpad is an HTML file that dynamically accesses a library of books in redpad format. This HTML file is, essentially, a reader.
 
-- *[Gerusalemme Liberata](https://unpkg.com/redpad@2.0.0/redpad.html)* (Jerusalem Delivered), by Torcuato Tasso.
+This is a link to the [latest version](https://unpkg.com/redpad@2.1.0/redpad.html).
 
 The following public domain books are available, translated to English:
 
-- *[Игрок](https://unpkg.com/redpad@2.0.0/ru/igrok-en.html)* (The Gambler), by Feodor Dostoievski.
+- *Игрок* (The Gambler), by Feodor Dostoievski.
 
-- Tome 1 of *[Война и мир](https://unpkg.com/redpad@2.0.0/ru/voina-1-en.html)* (War and Peace), by Lev Tolstoy
+- Tome 1 of *Война и мир* (War and Peace), by Lev Tolstoy.
 
-- *[Voyage au Centre de la Terre](https://unpkg.com/redpad@2.0.0/fr/voyage-en.html)* (Journey to the Center of the Earth), by Jules Verne.
+- *Капитанская дочка* (The Captain's Daughter), by Feodor Dostoievski.
 
-- *[Gerusalemme Liberata](https://unpkg.com/redpad@2.0.0/it/gerusalemme-en.html)* (Jerusalem Delivered), by Torcuato Tasso.
+- *Voyage au Centre de la Terre* (Journey to the Center of the Earth), by Jules Verne.
 
-All files are hosted by courtesy of [Unpkg](https://unpkg.com).
+- *Gerusalemme Liberata* (Jerusalem Delivered), by Torcuato Tasso.
+
+The full list is [here](https://github.com/fpereiro/redpad/tree/master/books).
+
+All files are hosted by courtesy of [Unpkg](https://unpkg.com) and [jsDelivr](https://www.jsdelivr.com/).
 
 ## But the translations are not correct! Isn't this misleading?
 
@@ -46,6 +50,10 @@ The process is quite straightforward:
 - We split it into parts (the technical term for this is `tokenizing`).
 - We use the amazing [Yandex translation API](https://tech.yandex.com) to translate each token and generate a JSON file containing each token and its translation.
 - We dynamically fetch the JSON file with book content into an HTML reader.
+
+## Redpad format
+
+It consists of a JSON array made of arrays, each of them with two elements. The first element of each array is a string with a fragment of the original text; the second element is either another string (with its translation) or `null` (if the translation is still pending).
 
 ## Installation
 
@@ -64,9 +72,8 @@ module.exports = {
 
 ## Todo
 
-- Add pairs until the page is full.
-- Split tokens by words if they don't fit in line (also translations).
-- Store last position per book.
+- Add missing things to pagination & improve performance.
+- Better display.
 
 ## Usage
 

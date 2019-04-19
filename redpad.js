@@ -72,6 +72,7 @@ Please refer to readme.md to read the annotated source.
          process.exit ();
       }
       var loop = function () {
+         if (index + translated === source.length) return outro ();
          r.translateOne (source [index + translated] [0], tolang || 'en', function (error, translation) {
             if (error) return outro ();
             source [index + translated] [1] = translation;
