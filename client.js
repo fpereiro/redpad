@@ -105,8 +105,12 @@
          ['change', ['State', 'currentpage'], function () {
             B.do ('draw', 'page');
          }],
-         ['show', '*', function () {
-            B.do ('calculate', 'pages', 10);
+         ['move', '*', function (x) {
+            var offset = x.path [0], current = B.get ('State', 'currentpage'), pages = B.get ('State', 'pages');
+            if (pages.length < current + offset) {
+               B.do ('calculate', 'pages', current + offset + 1 - pages.length);
+            }
+            B.do ('set', ['State', 'currentpage'], Math.max (1, current + offset));
          }],
       ];
 
@@ -114,14 +118,11 @@
          if (! B.get ('State', 'pages')) B.do ('calculate', 'pages', 20);
          if (! B.get ('State', 'currentpage')) B.do ('set', ['State', 'currentpage'], 1);
 
-         document.body.addEventListener ('click', function () {B.do ('toggle', '*')});
-
          document.body.addEventListener ('keydown', function (e) {
             var code = e.keyCode;
-            var page = B.get ('State', 'currentpage');
             if (code === 13 || code === 32) B.do ('toggle', '*');
-            if (code === 34 || code === 39) B.do ('set', ['State', 'currentpage'], page + 1);
-            if (code === 33 || code === 37) B.do ('set', ['State', 'currentpage'], Math.max (1, page - 1));
+            if (code === 34 || code === 39) B.do ('move', 1);
+            if (code === 33 || code === 37) B.do ('move', -1);
          });
 
       }}, function (x, book) {
@@ -138,19 +139,21 @@
                ['p.large', {position: 'relative', float: 'left', 'margin-right': 5, 'margin-bottom': 10}],
                ['div#text',   {width: '100%', height: '90%', 'background-color': 'black'}],
                ['div#bottom', {width: '100%', height: '5%'}, ['li', {'line-height': '5vh', width: 1/10, border: 'solid 2px white', color: 'white', cursor: 'pointer', 'text-align': 'center'}]],
-               ['li#pagebox', {'font-weight': 'bold', cursor: 'auto'}],
+               ['li.pagebox', {'font-weight': 'bold', cursor: 'auto'}],
             ]],
-            ['div', {class: 'opaque', id: 'text'}],
+            ['div', B.ev ({class: 'opaque', id: 'text'}, ['onclick', 'toggle', '*'])],
             ['div', {id: 'bottom'}, ['ul', dale.do ([-100, -10, -1, 0, 1, 10, 100], function (v) {
-               if (v === 0) return ['li', {id: 'pagebox'}];
-               return ['li', B.ev (['onclick', 'show', v]), 'Move ' + v];
+               if (v === 0) return B.view (['State', 'currentpage'], {tag: 'li', attrs: {class: 'pagebox'}}, function (x, current) {
+                  return 'Page ' + current;
+               });
+               return ['li', B.ev (['onclick', 'move', v]), 'Move ' + v];
             })]],
          ];
       });
    }
 
    Views.library = function () {
-      var SHA = 'eb2bceed3d87cd2d16eb5d05a27036d33a4082b9';
+      var SHA = 'cc7d88462e5cf68d88977c6ab85e739fca81ad42';
       var routes = [
          ['retrieve', 'library', function () {
             c.ajax ('get', 'https://cdn.jsdelivr.net/gh/fpereiro/redpad@' + SHA + '/books/readme.md', {}, '', function (error, data) {
