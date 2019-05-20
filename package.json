@@ -1,6 +1,6 @@
 {
    "name": "redpad",
-   "version": "2.2.0",
+   "version": "2.3.0",
    "description": "Tool to generate interlined translations of texts.",
    "dependencies": {
       "dale":   "4.3.3",

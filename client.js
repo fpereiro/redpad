@@ -190,7 +190,7 @@
    }
 
    Views.library = function () {
-      var SHA = 'cc7d88462e5cf68d88977c6ab85e739fca81ad42';
+      var SHA = '393a0392b75c6392741c4e28eece11886be300f8';
       var routes = [
          ['retrieve', 'library', function () {
             c.ajax ('get', 'https://cdn.jsdelivr.net/gh/fpereiro/redpad@' + SHA + '/books/readme.md', {}, '', function (error, data) {
