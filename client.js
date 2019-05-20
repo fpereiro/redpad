@@ -46,18 +46,47 @@
    Views.read = function () {
 
       var routes = [
+         ['copy', 'clipboard', function (x, string) {
+            // https://hackernoon.com/copying-text-to-clipboard-with-javascript-df4d4988697f
+            var el = document.createElement ('textarea');
+            el.value = string;
+            el.setAttribute ('readonly', '');
+            el.style.position = 'absolute';
+            el.style.left = '-9999px';
+            document.body.appendChild (el);
+            var selected = document.getSelection ().rangeCount > 0 ? document.getSelection ().getRangeAt (0) : false;
+            el.select ();
+            document.execCommand ('copy');
+            document.body.removeChild (el);
+            if (selected) {
+               document.getSelection ().removeAllRanges ();
+               document.getSelection ().addRange (selected);
+            }
+         }],
+         ['copy', 'page', function () {
+            var page = B.get ('State', 'currentpage') - 1, pages = B.get ('State', 'pages'), book = B.get ('Data', 'book');
+            var text = '';
+            var offset = pages [page - 1] || 0;
+            while (offset <= pages [page]) {
+               text += book [offset] [0];
+               offset++;
+            }
+            B.do ('copy', 'clipboard', text);
+         }],
          ['calculate', 'pages', function (x, howmany) {
+            c.set ('#calculating', {opacity: 1}, true);
             var book = B.get ('Data', 'book');
             var text = c ('#text');
             var dims = text.getBoundingClientRect ();
             var pages = B.get ('State', 'pages') || [], counter = 0;
             var offset = pages.length ? (pages [pages.length - 1] + 1) : 0;
+            text.innerHTML = '';
             var nextpage = function () {
                counter++;
                while (offset < book.length) {
                   var token = book [offset];
-                  var output = '<p class="large">' + token [0] + '<span class="small">' + token [1] + '</span></p>';
-                  if (token [0].match (/\n/)) output += '<br><br><br>';
+                  var newline = book [offset - 1] && book [offset - 1] [0].match (/\n/);
+                  var output = '<p class="large' + (newline ? ' clear' : '') + '">' + token [0] + '<span class="small">' + token [1] + '</span></p>';
                   text.innerHTML = text.innerHTML + output;
                   var paragraphs = c ('#text p');
                   var last = paragraphs [paragraphs.length - 1];
@@ -78,6 +107,7 @@
             }
             nextpage ();
             B.do ('set', ['State', 'pages'], pages);
+            c.set ('#calculating', {opacity: 0}, true);
          }],
          ['draw', 'page', function (x) {
             var page = B.get ('State', 'currentpage') - 1, pages = B.get ('State', 'pages');
@@ -86,11 +116,12 @@
             var output = '';
             while (offset <= pages [page]) {
                var token = B.get ('Data', 'book', offset);
-               output += '<p class="large" offset="' + offset + '">' + token [0] + '<span class="small">' + token [1] + '</span></p>';
-               if (token [0].match (/\n/)) output += '<br><br><br>';
+               var newline = B.get ('Data', 'book', offset - 1) && B.get ('Data', 'book', offset - 1, 0).match (/\n/);
+               output += '<p class="large' + (newline ? ' clear' : '') + '" offset="' + offset + '">' + token [0] + '<span class="small">' + token [1] + '</span></p>';
                offset++;
             }
             c ('#text').innerHTML = output;
+            B.do ('copy', 'page');
          }],
          ['toggle', '*', function () {
             var elements = document.getElementsByClassName ('small');
@@ -133,18 +164,24 @@
                   'background-color': 'black',
                   'font-family': 'serif',
                }],
+               ['div#calculating', {opacity: 0, 'background-color': 'white', color: 'black', position: 'absolute', width: 200, padding: 20, top: 50, left: 50}],
                ['p', {'font-size': 20, 'color': 'white'}],
                ['li', {'list-style-type': 'none', float: 'left', 'margin-right': 10, 'margin-bottom': 5}],
                ['span.small', {position: 'absolute', top: 22, left: 0, 'font-size': 0.7, opacity: 0}],
+               ['p.clear', {clear: 'left'}],
                ['p.large', {position: 'relative', float: 'left', 'margin-right': 5, 'margin-bottom': 10}],
                ['div#text',   {width: '100%', height: '90%', 'background-color': 'black'}],
                ['div#bottom', {width: '100%', height: '5%'}, ['li', {'line-height': '5vh', width: 1/10, border: 'solid 2px white', color: 'white', cursor: 'pointer', 'text-align': 'center'}]],
                ['li.pagebox', {'font-weight': 'bold', cursor: 'auto'}],
             ]],
+            ['div', {id: 'calculating'}, 'Calculating, please wait...'],
             ['div', B.ev ({class: 'opaque', id: 'text'}, ['onclick', 'toggle', '*'])],
             ['div', {id: 'bottom'}, ['ul', dale.do ([-100, -10, -1, 0, 1, 10, 100], function (v) {
                if (v === 0) return B.view (['State', 'currentpage'], {tag: 'li', attrs: {class: 'pagebox'}}, function (x, current) {
-                  return 'Page ' + current;
+                  return B.view (['State', 'pages'], function (x, pages) {
+                     if (! pages) return;
+                     return 'Position ' + (pages [current - 2] || 1);
+                  });
                });
                return ['li', B.ev (['onclick', 'move', v]), 'Move ' + v];
             })]],
@@ -172,6 +209,7 @@
             var last = function (a) {return a [a.length - 1]}
             c.ajax ('get', link, {}, '', function (error, data) {
                if (error) return alert ('There was an error accessing the library.');
+               if (data.body === false) return alert ('Error: the selected book is not valid JSON.');
                B.do ('set', ['Data', 'book'], data.body);
                B.do ('set', ['Data', 'source'], link);
                B.do ('set', ['State', 'view'], 'read');

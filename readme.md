@@ -70,11 +70,6 @@ module.exports = {
 }
 ```
 
-## Todo
-
-- Add missing things to pagination & improve performance.
-- Better display.
-
 ## Usage
 
 To take a text file and generate a JSON file where the translations will be placed: `node redpad json TXTFILE JSONFILE`.
@@ -92,7 +87,7 @@ The json file is an array of arrays. Each of the arrays contains two strings (th
 
 And if you are crazy enough:
 
-- Improve the translations manually for the books already in this repo (editing the .json files in the repo).
+- Improve the translations manually for the books already in this repo (editing the JSON files in the [books folder of the repo](https://github.com/fpereiro/redpad/tree/master/books)).
 
 ## License
 
