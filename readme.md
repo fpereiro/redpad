@@ -20,7 +20,7 @@ It would be nice to have the translation in the text itself, but only when I nee
 
 Redpad is an HTML file that dynamically accesses a library of books in redpad format. This HTML file is, essentially, a reader.
 
-This is a link to the [latest version](https://unpkg.com/redpad@2.3.0/redpad.html).
+This is a link to the [latest version](https://unpkg.com/redpad@2.3.1/redpad.html).
 
 The following public domain books are available, translated to English:
 
@@ -28,7 +28,7 @@ The following public domain books are available, translated to English:
 
 - Tome 1 of *Война и мир* (War and Peace), by Lev Tolstoy.
 
-- *Капитанская дочка* (The Captain's Daughter), by Feodor Dostoievski.
+- *Капитанская дочка* (The Captain's Daughter), by Alexander Pushkin.
 
 - *Voyage au Centre de la Terre* (Journey to the Center of the Earth), by Jules Verne.
 

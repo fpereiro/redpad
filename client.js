@@ -66,7 +66,7 @@
          ['copy', 'page', function () {
             var page = B.get ('State', 'currentpage') - 1, pages = B.get ('State', 'pages'), book = B.get ('Data', 'book');
             var text = '';
-            var offset = pages [page - 1] || 0;
+            var offset = pages [page - 1] ? pages [page - 1] + 1 : 0;
             while (offset <= pages [page]) {
                text += book [offset] [0];
                offset++;
