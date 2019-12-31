@@ -1,5 +1,5 @@
 /*
-redpad - v2.0.0
+redpad - v2.3.2
 
 Written by Federico Pereiro (fpereiro@gmail.com) and released into the public domain.
 
@@ -35,7 +35,7 @@ Please refer to readme.md to read the annotated source.
             response.body += chunk;
          });
          response.on ('end', function () {
-            var body = teishi.p (response.body);
+            var body = teishi.parse (response.body);
             if (body === false || ! body.text) return cb ('API error:', response.body);
             cb (null, body.text [0]);
          });
@@ -45,7 +45,7 @@ Please refer to readme.md to read the annotated source.
 
    r.stringify = function (array) {
       var output = '[\n';
-      dale.do (array, function (v) {
+      dale.go (array, function (v) {
          output += '   [' + JSON.stringify (v [0]) + ',   ' + JSON.stringify (v [1]) + '],\n';
       });
       output = output.slice (0, -2);
@@ -54,7 +54,7 @@ Please refer to readme.md to read the annotated source.
    }
 
    r.json = function (from, to) {
-       fs.writeFileSync (to, r.stringify (dale.do (fs.readFileSync (from, 'utf8').replace (/\t/g, ' ').replace (/\n{2,}/g, '\n').replace (/ {2,}/g, ' ').match (/[^.?!,;:\n]+[.?!,;:\n]+/g), function (token) {
+       fs.writeFileSync (to, r.stringify (dale.go (fs.readFileSync (from, 'utf8').replace (/\t/g, ' ').replace (/\n{2,}/g, '\n').replace (/ {2,}/g, ' ').match (/[^.?!,;:\n]+[.?!,;:\n]+/g), function (token) {
           return [token, null];
        })));
    }
