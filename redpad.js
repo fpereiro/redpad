@@ -1,5 +1,5 @@
 /*
-redpad - v2.3.2
+redpad - v2.3.3
 
 Written by Federico Pereiro (fpereiro@gmail.com) and released into the public domain.
 
@@ -74,10 +74,13 @@ Please refer to readme.md to read the annotated source.
       var loop = function () {
          if (index + translated === source.length) return outro ();
          r.translateOne (source [index + translated] [0], tolang || 'en', function (error, translation) {
-            if (error) return outro ();
+            if (error) {
+               clog ('ERROR', error, translation);
+               return outro ();
+            }
             source [index + translated] [1] = translation;
             translated++;
-            clog ('Translated', translated, 'Missing', source.length - index - translated, (Math.round (10000 * translated / (source.length - index)) / 100) + '%');
+            clog ('Translated', index + translated + '/' + source.length, (Math.round (10000 * (index + translated) / source.length) / 100) + '%');
             loop ();
          });
       }

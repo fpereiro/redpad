@@ -88,7 +88,7 @@
                   var newline = book [offset - 1] && book [offset - 1] [0].match (/\n/);
                   var output = '<p class="large' + (newline ? ' clear' : '') + '">' + token [0] + '<span class="small">' + token [1] + '</span></p>';
                   text.innerHTML = text.innerHTML + output;
-                  var paragraphs = c ('#text p');
+                  var paragraphs = document.getElementById ('text').children;
                   var last = paragraphs [paragraphs.length - 1];
                   var ldims = last.getBoundingClientRect ();
                   if (ldims.bottom > dims.bottom - 20) {
@@ -143,6 +143,20 @@
             }
             B.do ('set', ['State', 'currentpage'], Math.max (1, current + offset));
          }],
+         ['jump', '*', function (x) {
+            var where = parseInt (prompt ('Jump to position...'));
+            if (isNaN (where) || where < 0 || where % 1) return;
+            if (where > B.get ('Data', 'book').length) return;
+            var getMore = function () {
+               var page = dale.stopNot (B.get ('State', 'pages'), undefined, function (position, page) {
+                  if (position > where) return page + 1;
+               });
+               if (page) return B.do ('set', ['State', 'currentpage'], page);
+               B.do ('calculate', 'pages', 10);
+               getMore ();
+            }
+            getMore ();
+         }],
       ];
 
       return B.view (['Data', 'book'], {listen: routes, ondraw: function () {
@@ -177,7 +191,7 @@
             ['div', {id: 'calculating'}, 'Calculating, please wait...'],
             ['div', B.ev ({class: 'opaque', id: 'text'}, ['onclick', 'toggle', '*'])],
             ['div', {id: 'bottom'}, ['ul', dale.do ([-100, -10, -1, 0, 1, 10, 100], function (v) {
-               if (v === 0) return B.view (['State', 'currentpage'], {tag: 'li', attrs: {class: 'pagebox'}}, function (x, current) {
+               if (v === 0) return B.view (['State', 'currentpage'], {tag: 'li', attrs: B.ev ({class: 'pagebox'}, ['onclick', 'jump', '*'])}, function (x, current) {
                   return B.view (['State', 'pages'], function (x, pages) {
                      if (! pages) return;
                      return 'Position ' + (pages [current - 2] || 1);
@@ -190,10 +204,9 @@
    }
 
    Views.library = function () {
-      var SHA = '8eaae22790100bb73828626a295630acd7f36a53';
       var routes = [
          ['retrieve', 'library', function () {
-            c.ajax ('get', 'https://cdn.jsdelivr.net/gh/fpereiro/redpad@' + SHA + '/books/readme.md', {}, '', function (error, data) {
+            c.ajax ('get', 'https://raw.githubusercontent.com/fpereiro/redpad/master/books/readme.md', {}, '', function (error, data) {
                if (error) return alert ('There was an error accessing the library.');
                var books = [];
                dale.do (data.body.split ('\n'), function (line) {
@@ -233,7 +246,7 @@
       return B.view (['Data', 'library'], {listen: routes, ondraw: function () {B.do ('retrieve', 'library')}}, function (x, library) {
          return [
             ['h4', {style: 'position: absolute; top: 0; right: 30px'}, ['a', {target: '_blank', href: 'https://github.com/fpereiro/redpad'}, 'Redpad project home']],
-            ['h2', ['Redpad Library (', ['a', {target: '_blank', href: 'https://github.com/fpereiro/redpad/tree/' + SHA + '/books/readme.md'}, 'link'], ')']],
+            ['h2', ['Redpad Library (', ['a', {target: '_blank', href: 'https://github.com/fpereiro/redpad/tree/master/books/readme.md'}, 'link'], ')']],
             dale.do (library, function (book) {
                return [
                   ['span', B.ev ({style: 'font-size: 1.1em', class: 'action'}, ['onclick', 'load', 'book', book [1]]), book [0]],
