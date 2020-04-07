@@ -73,41 +73,48 @@
             }
             B.do ('copy', 'clipboard', text);
          }],
-         ['calculate', 'pages', function (x, howmany) {
+         ['calculate', 'pages', function (x, howmany, cb) {
             c.set ('#calculating', {opacity: 1}, true);
-            var book = B.get ('Data', 'book');
-            var text = c ('#text');
-            var dims = text.getBoundingClientRect ();
-            var pages = B.get ('State', 'pages') || [], counter = 0;
-            var offset = pages.length ? (pages [pages.length - 1] + 1) : 0;
-            text.innerHTML = '';
-            var nextpage = function () {
-               counter++;
-               while (offset < book.length) {
-                  var token = book [offset];
-                  var newline = book [offset - 1] && book [offset - 1] [0].match (/\n/);
-                  var output = '<p class="large' + (newline ? ' clear' : '') + '">' + token [0] + '<span class="small">' + token [1] + '</span></p>';
-                  text.innerHTML = text.innerHTML + output;
-                  var paragraphs = document.getElementById ('text').children;
-                  var last = paragraphs [paragraphs.length - 1];
-                  var ldims = last.getBoundingClientRect ();
-                  if (ldims.bottom > dims.bottom - 20) {
-                     offset--;
-                     break;
-                  }
-                  offset++;
-               }
+            setTimeout (function () {
+               var book = B.get ('Data', 'book');
+               var text = c ('#text');
+               var dims = text.getBoundingClientRect ();
+               var pages = B.get ('State', 'pages') || [], counter = 0;
+               var offset = pages.length ? (pages [pages.length - 1] + 1) : 0;
                text.innerHTML = '';
-               pages.push (offset);
-               if (counter === howmany) return;
-               if (offset < book.length) {
-                  offset++;
-                  nextpage ();
+               var nextpage = function (cb) {
+                  c ('#calculating span') [0].innerHTML = ' (' + (pages ? pages.length : counter) + ')';
+                  setTimeout (function () {
+                     counter++;
+                     while (offset < book.length) {
+                        var token = book [offset];
+                        var newline = book [offset - 1] && book [offset - 1] [0].match (/\n/);
+                        var output = '<p class="large' + (newline ? ' clear' : '') + '">' + token [0] + '<span class="small">' + token [1] + '</span></p>';
+                        text.innerHTML = text.innerHTML + output;
+                        var paragraphs = document.getElementById ('text').children;
+                        var last = paragraphs [paragraphs.length - 1];
+                        var ldims = last.getBoundingClientRect ();
+                        if (ldims.bottom > dims.bottom - 20) {
+                           offset--;
+                           break;
+                        }
+                        offset++;
+                     }
+                     text.innerHTML = '';
+                     pages.push (offset);
+                     if (counter === howmany) return cb ();
+                     if (offset < book.length) {
+                        offset++;
+                        nextpage (cb);
+                     }
+                  }, 0);
                }
-            }
-            nextpage ();
-            B.do ('set', ['State', 'pages'], pages);
-            c.set ('#calculating', {opacity: 0}, true);
+               nextpage (function () {
+                  B.do ('set', ['State', 'pages'], pages);
+                  c.set ('#calculating', {opacity: 0}, true);
+                  cb ();
+               });
+            }, 0);
          }],
          ['draw', 'page', function (x) {
             var page = B.get ('State', 'currentpage') - 1, pages = B.get ('State', 'pages');
@@ -138,9 +145,9 @@
          }],
          ['move', '*', function (x) {
             var offset = x.path [0], current = B.get ('State', 'currentpage'), pages = B.get ('State', 'pages');
-            if (pages.length < current + offset) {
-               B.do ('calculate', 'pages', current + offset + 1 - pages.length);
-            }
+            if (pages.length < current + offset) return B.do ('calculate', 'pages', current + offset + 1 - pages.length, function () {
+               B.do ('set', ['State', 'currentpage'], Math.max (1, current + offset));
+            });
             B.do ('set', ['State', 'currentpage'], Math.max (1, current + offset));
          }],
          ['jump', '*', function (x) {
@@ -152,16 +159,16 @@
                   if (position > where) return page + 1;
                });
                if (page) return B.do ('set', ['State', 'currentpage'], page);
-               B.do ('calculate', 'pages', 10);
-               getMore ();
+               B.do ('calculate', 'pages', 10, getMore);
             }
             getMore ();
          }],
       ];
 
       return B.view (['Data', 'book'], {listen: routes, ondraw: function () {
-         if (! B.get ('State', 'pages')) B.do ('calculate', 'pages', 20);
-         if (! B.get ('State', 'currentpage')) B.do ('set', ['State', 'currentpage'], 1);
+         if (! B.get ('State', 'pages')) B.do ('calculate', 'pages', 20, function () {
+            if (! B.get ('State', 'currentpage')) B.do ('set', ['State', 'currentpage'], 1);
+         });
 
          document.body.addEventListener ('keydown', function (e) {
             var code = e.keyCode;
@@ -188,7 +195,7 @@
                ['div#bottom', {width: '100%', height: '5%'}, ['li', {'line-height': '5vh', width: 1/10, border: 'solid 2px white', color: 'white', cursor: 'pointer', 'text-align': 'center'}]],
                ['li.pagebox', {'font-weight': 'bold', cursor: 'auto'}],
             ]],
-            ['div', {id: 'calculating'}, 'Calculating, please wait...'],
+            ['div', {id: 'calculating'}, ['Calculating, please wait...', ['span']]],
             ['div', B.ev ({class: 'opaque', id: 'text'}, ['onclick', 'toggle', '*'])],
             ['div', {id: 'bottom'}, ['ul', dale.do ([-100, -10, -1, 0, 1, 10, 100], function (v) {
                if (v === 0) return B.view (['State', 'currentpage'], {tag: 'li', attrs: B.ev ({class: 'pagebox'}, ['onclick', 'jump', '*'])}, function (x, current) {
@@ -222,6 +229,7 @@
             var last = function (a) {return a [a.length - 1]}
             c.ajax ('get', link, {}, '', function (error, data) {
                if (error) return alert ('There was an error accessing the library.');
+               if (type (data.body) === 'string') data.body = teishi.p (data.body);
                if (data.body === false) return alert ('Error: the selected book is not valid JSON.');
                B.do ('set', ['Data', 'book'], data.body);
                B.do ('set', ['Data', 'source'], link);

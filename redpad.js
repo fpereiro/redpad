@@ -1,5 +1,5 @@
 /*
-redpad - v2.3.3
+redpad - v2.3.4
 
 Written by Federico Pereiro (fpereiro@gmail.com) and released into the public domain.
 
